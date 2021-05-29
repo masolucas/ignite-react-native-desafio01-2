@@ -5,9 +5,10 @@ import checkIcon from '../assets/icons/Check.png';
 
 interface TodoInputProps {
   addTask: (task: string) => void;
+  darkMode: boolean;
 }
 
-export function TodoInput({ addTask }: TodoInputProps) {
+export function TodoInput({ addTask, darkMode }: TodoInputProps) {
   const [task, setTask] = useState('');
 
   function handleAddNewTask() {
@@ -16,10 +17,11 @@ export function TodoInput({ addTask }: TodoInputProps) {
   }
 
   return (
-    <View style={[styles.inputContainer, Platform.OS === 'ios' ? styles.inputIOSShadow : styles.inputAndroidShadow]}>
+    <View style={darkMode ? [styles.inputContainer, styles.inputContainerDark] : [styles.inputContainer, Platform.OS === 'ios' ? styles.inputIOSShadow : styles.inputAndroidShadow]}>
       <TextInput 
-        style={styles.input} 
+        style={darkMode ? [styles.input, styles.inputDark] : styles.input} 
         placeholder="Adicionar novo todo..."
+        placeholderTextColor={darkMode ? "#e1e1e6" : "#A09CB1"}
         returnKeyType="send"
         value={task}
         onChangeText={setTask}
@@ -28,7 +30,7 @@ export function TodoInput({ addTask }: TodoInputProps) {
       <TouchableOpacity
         testID="add-new-task-button"
         activeOpacity={0.7}
-        style={styles.addButton}
+        style={darkMode ? [styles.addButton, styles.addButtonDark] : styles.addButton}
         onPress={handleAddNewTask}
       >
         <Image source={checkIcon} />
@@ -47,12 +49,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  inputContainerDark: {
+    backgroundColor: '#212136',
+  },
   input: {
     flex: 1,
     backgroundColor: '#F5F4F8',
     paddingLeft: 12,
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
+    color: '#000'
+  },
+  inputDark: {
+    backgroundColor: '#212136',
+    color: '#FFF'
   },
   inputIOSShadow: {
     shadowColor: "#000",
@@ -74,5 +84,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5,
+  },
+  addButtonDark: {
+    backgroundColor: '#565BFF',
   },
 });
